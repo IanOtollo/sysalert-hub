@@ -2,6 +2,14 @@
   "buildCommand": "vite build",
   "outputDirectory": "dist",
   "rewrites": [
+    { "source": "/api/auth/:path+", "destination": "/api/auth" },
+    { "source": "/api/dashboard/:path+", "destination": "/api/dashboard" },
+    { "source": "/api/incidents/:path+", "destination": "/api/incidents" },
+    { "source": "/api/logs/:path+", "destination": "/api/logs" },
+    { "source": "/api/notifications/:path+", "destination": "/api/notifications" },
+    { "source": "/api/projects/:path+", "destination": "/api/projects" },
+    { "source": "/api/tasks/:path+", "destination": "/api/tasks" },
+    { "source": "/api/users/:path+", "destination": "/api/users" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }

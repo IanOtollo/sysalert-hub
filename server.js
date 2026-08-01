@@ -1,7 +1,10 @@
 // Local development server: mounts the /api Vercel-style serverless
 // handlers (each exporting a default (req, res) function) onto Express
 // so `npm run dev` works without the Vercel CLI. In production these
-// same files are deployed as Vercel serverless functions directly.
+// same files are deployed as Vercel serverless functions directly, with
+// vercel.json rewrites forwarding nested paths to each resource's
+// index.js (req.url is preserved either way, so handlers parse their own
+// slug from it — see lib/parseSlug.js).
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
@@ -18,15 +21,6 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-function toExpressRoute(relativeSegments) {
-  return (
-    '/' +
-    relativeSegments
-      .map((segment) => (segment.startsWith('[') ? `:${segment.slice(1, -1)}` : segment))
-      .join('/')
-  )
-}
-
 async function mountRoutes(dir, segments = []) {
   const entries = fs.readdirSync(dir, { withFileTypes: true })
 
@@ -36,13 +30,9 @@ async function mountRoutes(dir, segments = []) {
       continue
     }
 
-    if (!entry.name.endsWith('.js')) continue
+    if (entry.name !== 'index.js') continue
 
-    const isIndex = entry.name === 'index.js'
-    const isCatchAll = entry.name === '[[...slug]].js'
-    const baseName = entry.name.replace(/\.js$/, '')
-    const routeSegments = isIndex || isCatchAll ? segments : [...segments, baseName]
-    const basePath = '/api' + (routeSegments.length ? toExpressRoute(routeSegments) : '')
+    const basePath = '/api' + (segments.length ? '/' + segments.join('/') : '')
 
     const filePath = path.join(dir, entry.name)
     const mod = await import(pathToFileURL(filePath).href)
@@ -55,25 +45,10 @@ async function mountRoutes(dir, segments = []) {
       })
     }
 
-    if (isCatchAll) {
-      // Mirrors Vercel's [[...slug]].js: matches the base path itself
-      // (slug = []) and any nested path beneath it (slug = segments).
-      app.all(basePath, (req, res) => {
-        req.query = { ...req.query, slug: [] }
-        run(req, res)
-      })
-      app.all(`${basePath}/*`, (req, res) => {
-        req.query = { ...req.query, slug: req.params[0].split('/').filter(Boolean) }
-        run(req, res)
-      })
-      console.log(`Mounted ${basePath} (catch-all)`)
-      continue
-    }
-
-    app.all(basePath, (req, res) => {
-      req.query = { ...req.query, ...req.params }
-      run(req, res)
-    })
+    // Matches the resource root and any nested path beneath it — each
+    // handler derives its own slug from req.url via lib/parseSlug.js.
+    app.all(basePath, run)
+    app.all(`${basePath}/*`, run)
 
     console.log(`Mounted ${basePath}`)
   }

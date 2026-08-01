@@ -2,6 +2,7 @@ import dbConnect from '../../lib/dbConnect.js'
 import { protect } from '../../lib/authMiddleware.js'
 import Project from '../../models/Project.js'
 import logActivity from '../../lib/logActivity.js'
+import parseSlug from '../../lib/parseSlug.js'
 
 async function index(req, res) {
   if (req.method === 'GET') {
@@ -112,7 +113,7 @@ async function byId(req, res, id) {
 }
 
 async function dispatch(req, res) {
-  const slug = req.query.slug || []
+  const slug = parseSlug(req, '/api/projects')
 
   if (slug.length === 0) return index(req, res)
   if (slug.length === 1) return byId(req, res, slug[0])

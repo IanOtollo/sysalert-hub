@@ -4,6 +4,7 @@ import Task from '../../models/Task.js'
 import Project from '../../models/Project.js'
 import createNotification from '../../lib/createNotification.js'
 import logActivity from '../../lib/logActivity.js'
+import parseSlug from '../../lib/parseSlug.js'
 
 async function buildRoleFilter(user) {
   if (user.role === 'admin') return {}
@@ -192,7 +193,7 @@ async function status(req, res, id) {
 }
 
 async function dispatch(req, res) {
-  const slug = req.query.slug || []
+  const slug = parseSlug(req, '/api/tasks')
 
   if (slug.length === 0) return index(req, res)
   if (slug.length === 1 && slug[0] === 'my-tasks') return myTasks(req, res)

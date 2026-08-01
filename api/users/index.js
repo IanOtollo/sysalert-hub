@@ -3,6 +3,7 @@ import dbConnect from '../../lib/dbConnect.js'
 import { protect } from '../../lib/authMiddleware.js'
 import User from '../../models/User.js'
 import logActivity from '../../lib/logActivity.js'
+import parseSlug from '../../lib/parseSlug.js'
 
 async function index(req, res) {
   if (req.method !== 'GET') {
@@ -76,7 +77,7 @@ async function byId(req, res, id) {
 // Team leads need the roster to assign developers/clients to projects,
 // incidents, and tasks — write operations remain admin-only via byId.
 async function dispatch(req, res) {
-  const slug = req.query.slug || []
+  const slug = parseSlug(req, '/api/users')
 
   if (slug.length === 0) {
     if (!['admin', 'teamlead'].includes(req.user.role)) {

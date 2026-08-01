@@ -5,6 +5,7 @@ import Task from '../../models/Task.js'
 import Project from '../../models/Project.js'
 import User from '../../models/User.js'
 import ActivityLog from '../../models/ActivityLog.js'
+import parseSlug from '../../lib/parseSlug.js'
 
 async function incidentFilter(user) {
   if (user.role === 'admin') return {}
@@ -192,7 +193,7 @@ async function dispatch(req, res) {
     return res.status(405).json({ message: 'Method not allowed' })
   }
 
-  const slug = (req.query.slug || []).join('/')
+  const slug = parseSlug(req, '/api/dashboard').join('/')
   const route = ROUTES[slug]
   if (!route) return res.status(404).json({ message: 'Not found' })
 

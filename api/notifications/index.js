@@ -1,6 +1,7 @@
 import dbConnect from '../../lib/dbConnect.js'
 import { protect } from '../../lib/authMiddleware.js'
 import Notification from '../../models/Notification.js'
+import parseSlug from '../../lib/parseSlug.js'
 
 async function index(req, res) {
   if (req.method !== 'GET') {
@@ -50,7 +51,7 @@ async function markRead(req, res, id) {
 }
 
 async function dispatch(req, res) {
-  const slug = req.query.slug || []
+  const slug = parseSlug(req, '/api/notifications')
 
   if (slug.length === 0) return index(req, res)
   if (slug.length === 1 && slug[0] === 'read-all') return readAll(req, res)

@@ -5,6 +5,7 @@ import Project from '../../models/Project.js'
 import createNotification from '../../lib/createNotification.js'
 import logActivity from '../../lib/logActivity.js'
 import canAccessIncident from '../../lib/incidentAccess.js'
+import parseSlug from '../../lib/parseSlug.js'
 
 async function buildRoleFilter(user) {
   if (user.role === 'admin') return {}
@@ -280,7 +281,7 @@ async function comment(req, res, id) {
 }
 
 async function dispatch(req, res) {
-  const slug = req.query.slug || []
+  const slug = parseSlug(req, '/api/incidents')
 
   if (slug.length === 0) return index(req, res)
   if (slug.length === 1) return byId(req, res, slug[0])

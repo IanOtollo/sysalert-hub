@@ -3,6 +3,7 @@ import dbConnect from '../../lib/dbConnect.js'
 import { protect, signToken } from '../../lib/authMiddleware.js'
 import User from '../../models/User.js'
 import logActivity from '../../lib/logActivity.js'
+import parseSlug from '../../lib/parseSlug.js'
 
 async function login(req, res) {
   if (req.method !== 'POST') {
@@ -97,7 +98,7 @@ const wrappedRegister = protect(register, ['admin', 'teamlead'])
 
 export default async function handler(req, res) {
   await dbConnect()
-  const slug = (req.query.slug || []).join('/')
+  const slug = parseSlug(req, '/api/auth').join('/')
 
   if (slug === 'login') return login(req, res)
   if (slug === 'me') return wrappedMe(req, res)

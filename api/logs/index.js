@@ -1,6 +1,7 @@
 import dbConnect from '../../lib/dbConnect.js'
 import { protect } from '../../lib/authMiddleware.js'
 import ActivityLog from '../../models/ActivityLog.js'
+import parseSlug from '../../lib/parseSlug.js'
 
 async function index(req, res) {
   if (req.method !== 'GET') {
@@ -33,7 +34,7 @@ async function byUser(req, res, id) {
 }
 
 async function dispatch(req, res) {
-  const slug = req.query.slug || []
+  const slug = parseSlug(req, '/api/logs')
 
   if (slug.length === 0) return index(req, res)
   if (slug.length === 2 && slug[0] === 'user') return byUser(req, res, slug[1])
