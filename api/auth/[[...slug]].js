@@ -4,12 +4,47 @@ import { protect, signToken } from '../../lib/authMiddleware.js'
 import User from '../../models/User.js'
 import logActivity from '../../lib/logActivity.js'
 
-async function handler(req, res) {
+async function login(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' })
   }
 
-  await dbConnect()
+  const { email, password } = req.body
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password are required' })
+  }
+
+  const user = await User.findOne({ email: email.toLowerCase() })
+  if (!user || !user.isActive) {
+    return res.status(401).json({ message: 'Invalid credentials' })
+  }
+
+  const match = await bcrypt.compare(password, user.password)
+  if (!match) {
+    return res.status(401).json({ message: 'Invalid credentials' })
+  }
+
+  return res.status(200).json({
+    _id: user._id,
+    fullName: user.fullName,
+    email: user.email,
+    role: user.role,
+    profile: user.profile,
+    token: signToken(user),
+  })
+}
+
+async function me(req, res) {
+  if (req.method !== 'GET') {
+    return res.status(405).json({ message: 'Method not allowed' })
+  }
+  return res.status(200).json(req.user)
+}
+
+async function register(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method not allowed' })
+  }
 
   const { fullName, email, password, phone, role, profile } = req.body
 
@@ -57,4 +92,16 @@ async function handler(req, res) {
   })
 }
 
-export default protect(handler, ['admin', 'teamlead'])
+const wrappedMe = protect(me)
+const wrappedRegister = protect(register, ['admin', 'teamlead'])
+
+export default async function handler(req, res) {
+  await dbConnect()
+  const slug = (req.query.slug || []).join('/')
+
+  if (slug === 'login') return login(req, res)
+  if (slug === 'me') return wrappedMe(req, res)
+  if (slug === 'register') return wrappedRegister(req, res)
+
+  return res.status(404).json({ message: 'Not found' })
+}

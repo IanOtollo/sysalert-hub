@@ -39,23 +39,43 @@ async function mountRoutes(dir, segments = []) {
     if (!entry.name.endsWith('.js')) continue
 
     const isIndex = entry.name === 'index.js'
+    const isCatchAll = entry.name === '[[...slug]].js'
     const baseName = entry.name.replace(/\.js$/, '')
-    const routeSegments = isIndex ? segments : [...segments, baseName]
-    const routePath = '/api' + (routeSegments.length ? toExpressRoute(routeSegments) : '')
+    const routeSegments = isIndex || isCatchAll ? segments : [...segments, baseName]
+    const basePath = '/api' + (routeSegments.length ? toExpressRoute(routeSegments) : '')
 
     const filePath = path.join(dir, entry.name)
     const mod = await import(pathToFileURL(filePath).href)
     const handler = mod.default
 
-    app.all(routePath, (req, res) => {
-      req.query = { ...req.query, ...req.params }
+    const run = (req, res) => {
       handler(req, res).catch((err) => {
         console.error(err)
         if (!res.headersSent) res.status(500).json({ message: 'Internal server error' })
       })
+    }
+
+    if (isCatchAll) {
+      // Mirrors Vercel's [[...slug]].js: matches the base path itself
+      // (slug = []) and any nested path beneath it (slug = segments).
+      app.all(basePath, (req, res) => {
+        req.query = { ...req.query, slug: [] }
+        run(req, res)
+      })
+      app.all(`${basePath}/*`, (req, res) => {
+        req.query = { ...req.query, slug: req.params[0].split('/').filter(Boolean) }
+        run(req, res)
+      })
+      console.log(`Mounted ${basePath} (catch-all)`)
+      continue
+    }
+
+    app.all(basePath, (req, res) => {
+      req.query = { ...req.query, ...req.params }
+      run(req, res)
     })
 
-    console.log(`Mounted ${routePath}`)
+    console.log(`Mounted ${basePath}`)
   }
 }
 

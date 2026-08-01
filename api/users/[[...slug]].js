@@ -4,9 +4,16 @@ import { protect } from '../../lib/authMiddleware.js'
 import User from '../../models/User.js'
 import logActivity from '../../lib/logActivity.js'
 
-async function handler(req, res) {
-  await dbConnect()
-  const { id } = req.query
+async function index(req, res) {
+  if (req.method !== 'GET') {
+    return res.status(405).json({ message: 'Method not allowed' })
+  }
+
+  const users = await User.find().select('-password').sort({ createdAt: -1 })
+  return res.status(200).json(users)
+}
+
+async function byId(req, res, id) {
   const isSelf = req.user._id.toString() === id
   const isAdmin = req.user.role === 'admin'
 
@@ -66,5 +73,27 @@ async function handler(req, res) {
   return res.status(405).json({ message: 'Method not allowed' })
 }
 
-// Role check for self-vs-admin access happens inside the handler.
-export default protect(handler)
+// Team leads need the roster to assign developers/clients to projects,
+// incidents, and tasks — write operations remain admin-only via byId.
+async function dispatch(req, res) {
+  const slug = req.query.slug || []
+
+  if (slug.length === 0) {
+    if (!['admin', 'teamlead'].includes(req.user.role)) {
+      return res.status(403).json({ message: 'Forbidden: insufficient role' })
+    }
+    return index(req, res)
+  }
+
+  // Role check for self-vs-admin access happens inside byId.
+  if (slug.length === 1) return byId(req, res, slug[0])
+
+  return res.status(404).json({ message: 'Not found' })
+}
+
+const wrapped = protect(dispatch)
+
+export default async function handler(req, res) {
+  await dbConnect()
+  return wrapped(req, res)
+}
