@@ -1,6 +1,11 @@
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { Outlet, useLocation, matchPath } from 'react-router-dom'
 import BottomBar from './BottomBar.jsx'
 import Topbar from './Topbar.jsx'
+import { fetchNotifications } from '../features/notifications/notificationsSlice.js'
+
+const NOTIFICATIONS_POLL_MS = 30000
 
 const TITLES = [
   { path: '/dashboard', title: 'Dashboard' },
@@ -23,6 +28,15 @@ function getTitle(pathname) {
 
 export default function Layout() {
   const location = useLocation()
+  const dispatch = useDispatch()
+
+  // Single shared poll for the whole authenticated app — NotificationBell
+  // and BottomBar both read from the store instead of polling separately.
+  useEffect(() => {
+    dispatch(fetchNotifications())
+    const interval = setInterval(() => dispatch(fetchNotifications()), NOTIFICATIONS_POLL_MS)
+    return () => clearInterval(interval)
+  }, [dispatch])
 
   return (
     <div className="flex min-h-screen flex-col bg-brand-cream">

@@ -1,49 +1,40 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
 import { toast } from 'react-toastify'
 import { LuCheck, LuTrash2, LuCheckCheck } from 'react-icons/lu'
-import api from '../utils/axios.js'
 import Spinner from '../components/Spinner.jsx'
+import {
+  fetchNotifications,
+  markAsRead,
+  markAllAsRead,
+  deleteNotification,
+  selectUnreadCount,
+} from '../features/notifications/notificationsSlice.js'
 
 export default function Notifications() {
-  const [notifications, setNotifications] = useState([])
-  const [loading, setLoading] = useState(true)
-
-  async function load() {
-    const { data } = await api.get('/notifications')
-    setNotifications(data)
-  }
+  const dispatch = useDispatch()
+  const notifications = useSelector((state) => state.notifications.items)
+  const loaded = useSelector((state) => state.notifications.loaded)
+  const unreadCount = useSelector(selectUnreadCount)
 
   useEffect(() => {
-    load().finally(() => setLoading(false))
-  }, [])
+    dispatch(fetchNotifications())
+  }, [dispatch])
 
-  async function markAsRead(id) {
-    await api.put(`/notifications/${id}/read`)
-    setNotifications((prev) => prev.map((n) => (n._id === id ? { ...n, isRead: true } : n)))
-  }
-
-  async function markAllRead() {
-    await api.put('/notifications/read-all')
-    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })))
+  async function handleMarkAllRead() {
+    await dispatch(markAllAsRead())
     toast.success('All notifications marked as read')
   }
 
-  async function remove(id) {
-    await api.delete(`/notifications/${id}`)
-    setNotifications((prev) => prev.filter((n) => n._id !== id))
-  }
-
-  if (loading) return <Spinner size="lg" />
-
-  const unreadCount = notifications.filter((n) => !n.isRead).length
+  if (!loaded) return <Spinner size="lg" />
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <p className="text-sm text-brand-brown/60">{unreadCount} unread</p>
         {unreadCount > 0 && (
-          <button onClick={markAllRead} className="btn-secondary flex items-center gap-1.5">
+          <button onClick={handleMarkAllRead} className="btn-secondary flex items-center gap-1.5">
             <LuCheckCheck className="h-4 w-4" /> Mark all as read
           </button>
         )}
@@ -68,7 +59,7 @@ export default function Notifications() {
               <div className="flex shrink-0 gap-2">
                 {!n.isRead && (
                   <button
-                    onClick={() => markAsRead(n._id)}
+                    onClick={() => dispatch(markAsRead(n._id))}
                     className="rounded-btn p-2 text-brand-green hover:bg-brand-cream"
                     aria-label="Mark as read"
                   >
@@ -76,7 +67,7 @@ export default function Notifications() {
                   </button>
                 )}
                 <button
-                  onClick={() => remove(n._id)}
+                  onClick={() => dispatch(deleteNotification(n._id))}
                   className="rounded-btn p-2 text-brand-orange hover:bg-brand-cream"
                   aria-label="Delete notification"
                 >

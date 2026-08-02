@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import useHideOnScroll from '../hooks/useHideOnScroll.js'
-import useUnreadCount from '../hooks/useUnreadCount.js'
+import { selectUnreadCount } from '../features/notifications/notificationsSlice.js'
 import {
   LuLayoutDashboard,
   LuFolderKanban,
@@ -37,7 +37,7 @@ const NAV_ITEMS = [
 export default function BottomBar() {
   const { user } = useSelector((state) => state.auth)
   const visible = useHideOnScroll()
-  const unreadCount = useUnreadCount()
+  const unreadCount = useSelector(selectUnreadCount)
   const items = NAV_ITEMS.filter((item) => !user || item.roles.includes(user.role))
 
   return (

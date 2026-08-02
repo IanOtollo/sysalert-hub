@@ -10,17 +10,30 @@ async function index(req, res) {
     return res.status(405).json({ message: 'Method not allowed' })
   }
 
-  const { userId, entity, limit } = req.query
+  const { userId, entity, page, limit } = req.query
   const filter = {}
   if (userId) filter.user = userId
   if (entity) filter.entity = entity
 
-  const logs = await ActivityLog.find(filter)
-    .populate('user', 'fullName email role')
-    .sort({ createdAt: -1 })
-    .limit(limit ? parseInt(limit, 10) : 200)
+  const pageSize = limit ? parseInt(limit, 10) : 20
+  const pageNum = page ? Math.max(parseInt(page, 10), 1) : 1
 
-  return res.status(200).json(logs)
+  const [logs, total] = await Promise.all([
+    ActivityLog.find(filter)
+      .populate('user', 'fullName email role')
+      .sort({ createdAt: -1 })
+      .skip((pageNum - 1) * pageSize)
+      .limit(pageSize),
+    ActivityLog.countDocuments(filter),
+  ])
+
+  return res.status(200).json({
+    logs,
+    total,
+    page: pageNum,
+    pageSize,
+    totalPages: Math.max(Math.ceil(total / pageSize), 1),
+  })
 }
 
 async function byUser(req, res, id) {

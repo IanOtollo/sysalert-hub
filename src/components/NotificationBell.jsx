@@ -1,31 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { LuBell } from 'react-icons/lu'
 import moment from 'moment'
-import api from '../utils/axios.js'
+import { markAsRead, selectUnreadCount } from '../features/notifications/notificationsSlice.js'
 
 export default function NotificationBell() {
   const [open, setOpen] = useState(false)
-  const [notifications, setNotifications] = useState([])
   const ref = useRef(null)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length
-
-  async function fetchNotifications() {
-    try {
-      const { data } = await api.get('/notifications')
-      setNotifications(data)
-    } catch {
-      // silent fail — bell just stays at last known state
-    }
-  }
-
-  useEffect(() => {
-    fetchNotifications()
-    const interval = setInterval(fetchNotifications, 30000)
-    return () => clearInterval(interval)
-  }, [])
+  const notifications = useSelector((state) => state.notifications.items)
+  const unreadCount = useSelector(selectUnreadCount)
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -34,11 +21,6 @@ export default function NotificationBell() {
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
-
-  async function markAsRead(id) {
-    await api.put(`/notifications/${id}/read`)
-    setNotifications((prev) => prev.map((n) => (n._id === id ? { ...n, isRead: true } : n)))
-  }
 
   return (
     <div className="relative" ref={ref}>
@@ -71,7 +53,7 @@ export default function NotificationBell() {
               notifications.slice(0, 8).map((n) => (
                 <button
                   key={n._id}
-                  onClick={() => markAsRead(n._id)}
+                  onClick={() => dispatch(markAsRead(n._id))}
                   className={`block w-full border-b border-brand-border/60 px-4 py-3 text-left text-sm last:border-0 hover:bg-brand-cream ${
                     n.isRead ? 'opacity-60' : ''
                   }`}
