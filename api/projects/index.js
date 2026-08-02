@@ -1,6 +1,8 @@
 import dbConnect from '../../lib/dbConnect.js'
 import { protect } from '../../lib/authMiddleware.js'
 import Project from '../../models/Project.js'
+// Referenced by .populate() below — see note in api/incidents/index.js.
+import User from '../../models/User.js'
 import logActivity from '../../lib/logActivity.js'
 import parseSlug from '../../lib/parseSlug.js'
 

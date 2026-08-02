@@ -2,6 +2,10 @@ import dbConnect from '../../lib/dbConnect.js'
 import { protect } from '../../lib/authMiddleware.js'
 import Incident from '../../models/Incident.js'
 import Project from '../../models/Project.js'
+// Referenced by .populate() below — Vercel bundles each function in
+// isolation, so the model must be imported directly to register its
+// schema, even though it isn't used by name in this file otherwise.
+import User from '../../models/User.js'
 import createNotification from '../../lib/createNotification.js'
 import logActivity from '../../lib/logActivity.js'
 import canAccessIncident from '../../lib/incidentAccess.js'
