@@ -5,6 +5,12 @@ import bcrypt from 'bcryptjs'
 import dotenv from 'dotenv'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import dns from 'dns'
+
+// Some local/ISP DNS resolvers refuse SRV queries (needed for mongodb+srv://)
+// even though they handle normal A-record lookups fine. Point Node at a
+// public resolver so the Atlas SRV + TXT lookups succeed everywhere.
+dns.setServers(['8.8.8.8', '1.1.1.1'])
 
 import User from '../models/User.js'
 import Project from '../models/Project.js'

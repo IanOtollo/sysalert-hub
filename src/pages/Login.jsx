@@ -30,7 +30,7 @@ export default function Login() {
     <div className="flex min-h-screen items-center justify-center bg-brand-gradient px-4 py-12">
       <div className="w-full max-w-md">
         <div className="mb-8 flex flex-col items-center">
-          <img src="/logo.png" alt="KaziLink" className="h-14 w-auto" />
+          <img src="/logo.png" alt="KaziLink" className="h-24 w-auto" />
           <p className="mt-2 flex items-center gap-1.5 text-sm text-brand-brown/60">
             <LuTriangleAlert className="h-4 w-4 text-brand-orange" /> Incident & Task Management
           </p>
