@@ -30,7 +30,10 @@ export default function Topbar() {
     <header className="sticky top-0 z-30 flex items-center justify-between border-b border-brand-border/60 bg-brand-cream/90 px-4 py-4 backdrop-blur-md sm:px-6 lg:px-8">
       <div className="flex items-center gap-2.5">
         <img src="/logo.png" alt="KaziLink" className="h-12 w-auto" />
-        <span className="font-serif text-lg text-brand-brown">KaziLink</span>
+        <span className="font-serif text-lg">
+          <span className="text-brand-brown">Kazi</span>
+          <span className="text-brand-brownlight">Link</span>
+        </span>
       </div>
 
       <div className="flex items-center gap-3 sm:gap-4">
