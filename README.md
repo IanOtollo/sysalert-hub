@@ -1,8 +1,8 @@
-# SysAlert Hub
+# KaziLink
 
 Incident alert and task management system built for **IKA 360** (Ika Three Sixty), a Zoho Partner firm in Kenya. Developed by **Marydiana Wangila (25-0678)** as part of a Diploma in ICT industrial attachment project at Daystar University.
 
-SysAlert Hub replaces manual communication with centralized incident reporting, alert notifications, task assignment, and progress tracking.
+KaziLink replaces manual communication with centralized incident reporting, alert notifications, task assignment, and progress tracking.
 
 ## Tech Stack
 

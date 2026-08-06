@@ -23,7 +23,7 @@ const TITLES = [
 
 function getTitle(pathname) {
   const match = TITLES.find((t) => matchPath({ path: t.path, end: true }, pathname))
-  return match?.title || 'SysAlert Hub'
+  return match?.title || 'KaziLink'
 }
 
 export default function Layout() {

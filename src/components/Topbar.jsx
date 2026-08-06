@@ -37,7 +37,7 @@ export default function Topbar() {
         </div>
         <div className="leading-tight">
           <p className="font-serif text-sm text-brand-brown sm:text-base">Ika Three Sixty</p>
-          <p className="text-[10px] text-brand-brown/50">SysAlert Hub</p>
+          <p className="text-[10px] text-brand-brown/50">KaziLink</p>
         </div>
       </div>
 

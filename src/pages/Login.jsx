@@ -37,7 +37,7 @@ export default function Login() {
             </span>
           </div>
           <span className="mt-2 text-[10px] tracking-[0.2em] text-brand-brown/60">IKA THREE SIXTY</span>
-          <h1 className="mt-4 font-serif text-3xl text-brand-brown">SysAlert Hub</h1>
+          <h1 className="mt-4 font-serif text-3xl text-brand-brown">KaziLink</h1>
           <p className="mt-1 flex items-center gap-1.5 text-sm text-brand-brown/60">
             <LuTriangleAlert className="h-4 w-4 text-brand-orange" /> Powered by Ika Three Sixty
           </p>
@@ -84,7 +84,7 @@ export default function Login() {
         </form>
 
         <p className="mt-6 text-center text-xs text-brand-brown/50">
-          &copy; {new Date().getFullYear()} IKA 360 — SysAlert Hub Incident &amp; Task Management
+          &copy; {new Date().getFullYear()} IKA 360 — KaziLink Incident &amp; Task Management
         </p>
       </div>
     </div>
