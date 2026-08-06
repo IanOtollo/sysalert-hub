@@ -5,7 +5,7 @@ const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-  const stored = localStorage.getItem('sysalert_user')
+  const stored = localStorage.getItem('kazilink_user')
   if (stored) {
     const { token } = JSON.parse(stored)
     if (token) config.headers.Authorization = `Bearer ${token}`
@@ -17,7 +17,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('sysalert_user')
+      localStorage.removeItem('kazilink_user')
       if (window.location.pathname !== '/login') {
         window.location.href = '/login'
       }

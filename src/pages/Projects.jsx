@@ -25,7 +25,7 @@ const emptyForm = {
   endDate: '',
 }
 
-const EMAIL_DOMAIN = '@ika360.com'
+const EMAIL_DOMAIN = '@kazilink.com'
 
 const emptyClientForm = { fullName: '', email: '', password: '', phone: '' }
 

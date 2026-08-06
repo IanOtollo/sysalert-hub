@@ -1,6 +1,6 @@
 import api from '../../utils/axios.js'
 
-const STORAGE_KEY = 'sysalert_user'
+const STORAGE_KEY = 'kazilink_user'
 
 async function login(credentials) {
   const { data } = await api.post('/auth/login', credentials)

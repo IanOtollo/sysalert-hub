@@ -1,7 +1,7 @@
 {
-  "name": "sysalert-hub",
+  "name": "kazilink",
   "version": "1.0.0",
-  "description": "KaziLink — Incident Alert & Task Management System for IKA 360",
+  "description": "KaziLink — Incident Alert & Task Management System",
   "type": "module",
   "scripts": {
     "dev": "concurrently -n server,client -c blue,green \"npm:server\" \"npm:client\"",

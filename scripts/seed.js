@@ -36,11 +36,11 @@ async function seed() {
   console.log('Cleared existing collections')
 
   const [admin, teamlead, dev1, dev2, client] = await User.create([
-    { fullName: 'Marydiana Wangila', email: 'admin@ika360.com', password: await hash('Admin@123'), role: 'admin', phone: '0700000001' },
-    { fullName: 'Brian Otieno', email: 'teamlead@ika360.com', password: await hash('Lead@123'), role: 'teamlead', phone: '0700000002' },
-    { fullName: 'Faith Nyambura', email: 'dev1@ika360.com', password: await hash('Dev@123'), role: 'developer', phone: '0700000003' },
-    { fullName: 'Kevin Mwangi', email: 'dev2@ika360.com', password: await hash('Dev@123'), role: 'developer', phone: '0700000004' },
-    { fullName: 'Grace Wanjiru', email: 'client@ika360.com', password: await hash('Client@123'), role: 'client', phone: '0700000005' },
+    { fullName: 'Marydiana Wangila', email: 'admin@kazilink.com', password: await hash('Admin@123'), role: 'admin', phone: '0700000001' },
+    { fullName: 'Brian Otieno', email: 'teamlead@kazilink.com', password: await hash('Lead@123'), role: 'teamlead', phone: '0700000002' },
+    { fullName: 'Faith Nyambura', email: 'dev1@kazilink.com', password: await hash('Dev@123'), role: 'developer', phone: '0700000003' },
+    { fullName: 'Kevin Mwangi', email: 'dev2@kazilink.com', password: await hash('Dev@123'), role: 'developer', phone: '0700000004' },
+    { fullName: 'Grace Wanjiru', email: 'client@kazilink.com', password: await hash('Client@123'), role: 'client', phone: '0700000005' },
   ])
   console.log('Seeded users')
 
@@ -197,11 +197,11 @@ async function seed() {
   console.log('Seeded activity logs')
 
   console.log('\nSeed complete. Demo accounts:')
-  console.log('  admin@ika360.com / Admin@123')
-  console.log('  teamlead@ika360.com / Lead@123')
-  console.log('  dev1@ika360.com / Dev@123')
-  console.log('  dev2@ika360.com / Dev@123')
-  console.log('  client@ika360.com / Client@123')
+  console.log('  admin@kazilink.com / Admin@123')
+  console.log('  teamlead@kazilink.com / Lead@123')
+  console.log('  dev1@kazilink.com / Dev@123')
+  console.log('  dev2@kazilink.com / Dev@123')
+  console.log('  client@kazilink.com / Client@123')
 
   await mongoose.disconnect()
   process.exit(0)

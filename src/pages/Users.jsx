@@ -11,7 +11,7 @@ const emptyForm = { fullName: '', email: '', password: '', phone: '', role: 'dev
 
 const ROLE_OPTIONS = Object.entries(ROLE_LABELS).map(([value, label]) => ({ value, label }))
 
-const EMAIL_DOMAIN = '@ika360.com'
+const EMAIL_DOMAIN = '@kazilink.com'
 
 export default function Users() {
   const [users, setUsers] = useState([])

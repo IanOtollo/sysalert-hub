@@ -30,16 +30,9 @@ export default function Login() {
     <div className="flex min-h-screen items-center justify-center bg-brand-gradient px-4 py-12">
       <div className="w-full max-w-md">
         <div className="mb-8 flex flex-col items-center">
-          <div className="flex h-20 w-20 items-center justify-center rounded-full border border-brand-brown/20 bg-white/70">
-            <span className="font-serif text-xl text-brand-brown">
-              IKA<span className="text-brand-orange">3</span>
-              <span className="text-brand-green">6</span>0
-            </span>
-          </div>
-          <span className="mt-2 text-[10px] tracking-[0.2em] text-brand-brown/60">IKA THREE SIXTY</span>
-          <h1 className="mt-4 font-serif text-3xl text-brand-brown">KaziLink</h1>
-          <p className="mt-1 flex items-center gap-1.5 text-sm text-brand-brown/60">
-            <LuTriangleAlert className="h-4 w-4 text-brand-orange" /> Powered by Ika Three Sixty
+          <img src="/logo.png" alt="KaziLink" className="h-14 w-auto" />
+          <p className="mt-2 flex items-center gap-1.5 text-sm text-brand-brown/60">
+            <LuTriangleAlert className="h-4 w-4 text-brand-orange" /> Incident & Task Management
           </p>
         </div>
 
@@ -52,7 +45,7 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="input-field"
-              placeholder="you@ika360.com"
+              placeholder="you@kazilink.com"
             />
           </div>
 
@@ -84,7 +77,7 @@ export default function Login() {
         </form>
 
         <p className="mt-6 text-center text-xs text-brand-brown/50">
-          &copy; {new Date().getFullYear()} IKA 360 — KaziLink Incident &amp; Task Management
+          &copy; {new Date().getFullYear()} KaziLink Incident &amp; Task Management
         </p>
       </div>
     </div>

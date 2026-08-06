@@ -29,16 +29,7 @@ export default function Topbar() {
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between border-b border-brand-border/60 bg-brand-cream/90 px-4 py-4 backdrop-blur-md sm:px-6 lg:px-8">
       <div className="flex items-center gap-2.5">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-brand-brown/20 bg-white">
-          <span className="font-serif text-[9px] leading-none text-brand-brown">
-            IKA<span className="text-brand-orange">3</span>
-            <span className="text-brand-green">6</span>0
-          </span>
-        </div>
-        <div className="leading-tight">
-          <p className="font-serif text-sm text-brand-brown sm:text-base">Ika Three Sixty</p>
-          <p className="text-[10px] text-brand-brown/50">KaziLink</p>
-        </div>
+        <img src="/logo.png" alt="KaziLink" className="h-8 w-auto" />
       </div>
 
       <div className="flex items-center gap-3 sm:gap-4">

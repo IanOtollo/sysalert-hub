@@ -1,6 +1,6 @@
 # KaziLink
 
-Incident alert and task management system built for **IKA 360** (Ika Three Sixty), a Zoho Partner firm in Kenya. Developed by **Marydiana Wangila (25-0678)** as part of a Diploma in ICT industrial attachment project at Daystar University.
+Incident alert and task management system built for a Zoho Partner firm in Kenya. Developed by **Marydiana Wangila (25-0678)** as part of a Diploma in ICT industrial attachment project at Daystar University.
 
 KaziLink replaces manual communication with centralized incident reporting, alert notifications, task assignment, and progress tracking.
 
@@ -48,11 +48,11 @@ KaziLink replaces manual communication with centralized incident reporting, aler
 
 | Role | Email | Password |
 |---|---|---|
-| Admin | admin@ika360.com | Admin@123 |
-| Team Lead | teamlead@ika360.com | Lead@123 |
-| Developer | dev1@ika360.com | Dev@123 |
-| Developer | dev2@ika360.com | Dev@123 |
-| Client | client@ika360.com | Client@123 |
+| Admin | admin@kazilink.com | Admin@123 |
+| Team Lead | teamlead@kazilink.com | Lead@123 |
+| Developer | dev1@kazilink.com | Dev@123 |
+| Developer | dev2@kazilink.com | Dev@123 |
+| Client | client@kazilink.com | Client@123 |
 
 ## Deployment (Vercel)
 
@@ -64,7 +64,7 @@ KaziLink replaces manual communication with centralized incident reporting, aler
 ## Project Structure
 
 ```
-sysalert-hub/
+kazilink/
 ├── api/            Vercel serverless backend (auth, users, projects, incidents, tasks, notifications, logs, dashboard)
 ├── lib/            Shared backend helpers (db connection, auth middleware, notifications, activity logging)
 ├── models/         Mongoose schemas
@@ -75,5 +75,5 @@ sysalert-hub/
 
 ## Notes
 
-- The IKA 360 logo is currently rendered as styled text (`IKA360`, with the "3" in orange and "6" in olive-green) in the Sidebar and Login page. Replace it with `<img src="/logo.png" />` once the official logo file is available.
+- The KaziLink wordmark is served from `public/logo.png` and rendered via `<img>` in the Topbar and Login page.
 - All Vercel serverless functions in `/api` double as Express-mounted routes locally via `server.js`, so the same handler code runs in both environments.

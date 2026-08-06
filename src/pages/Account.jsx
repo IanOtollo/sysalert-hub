@@ -19,8 +19,8 @@ export default function Account() {
       const update = { fullName, phone }
       if (password) update.password = password
       await api.put(`/users/${user._id}`, update)
-      const stored = JSON.parse(localStorage.getItem('sysalert_user'))
-      localStorage.setItem('sysalert_user', JSON.stringify({ ...stored, fullName, phone }))
+      const stored = JSON.parse(localStorage.getItem('kazilink_user'))
+      localStorage.setItem('kazilink_user', JSON.stringify({ ...stored, fullName, phone }))
       toast.success('Profile updated — refresh to see changes everywhere')
       setPassword('')
     } catch (err) {
